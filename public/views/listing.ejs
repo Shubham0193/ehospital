@@ -1,0 +1,128 @@
+<% if(rollsession == 1 && branchid < 0) { %>
+  <%- include('header_manageHospital') %>
+<% } else {%> 
+  <%- include('header') %>
+<% } %>
+  <!-- Breadcrumbs -->
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <a href="dashboard">Dashboard</a>
+    </li>
+  </ol>
+
+  <% if(users.length==0) { %>
+    Records not available.....!!!!
+  <% } %>
+
+  <!-- <%=users.data%> -->
+  <% if(users.length!=0) { %>
+  <!-- <div class="page-content-wrapper">
+  <div class="page-content"> -->
+  <!-- <div class="page-bar">
+  <div class="page-title-breadcrumb">
+  <div class=" pull-left">
+  <div class="page-title">Doctor List</div>
+  </div>
+  <ol class="breadcrumb page-breadcrumb pull-right">
+  <li>
+  <i class="fa fa-home"></i>&nbsp;
+  <a class="parent-item" href="dashboard">Home</a>&nbsp;
+  <i class="fa fa-angle-right"></i>
+  </li>
+  <li>
+  <a class="parent-item" href="<%=adddata%>"><%=adddata%></a>&nbsp;
+  <i class="fa fa-angle-right"></i>
+  </li>
+  <li class="active">List</li>
+  </ol>
+  </div>
+  </div> -->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="tabbable-line">
+        <div class="tab-content">
+          <div class="tab-pane active fontawesome-demo" id="tab1">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-topline-red">
+                  <div class="card-body ">
+                    <div class="table-scrollable">
+                      <table class="table table-hover table-checkable order-column full-width" id="example4">
+                        <div class="filter-panel col-sm-6 col-md-12">
+                          <div class="row">
+                            <label class="col-sm-6 col-md-6">
+                              <span class="pull-left">
+                                <a class="btn btn-primary" id="addRow" href="add-<%=adddata%>">
+                                <i class="fa fa-plus-circle"></i>Add-Records</a>
+                              </span>
+                            </label>
+                            <form action="/search-<%= adddata%>" method="get">
+                              <input type="text" class="form-control col-md-3" id="myInput" name="searchName" placeholder="Search">&nbsp;
+                              <input type="submit" value="Search" class="btn btn-primary btn-block col-md-1" />
+                            </form>
+                          </div>
+                        </div>
+                        <tr>
+                          <% for(index=0;index<Object.keys(users[0]).length;index++){  %>
+                            <% var column =Object.keys(users[0]);%>                          
+                            <th>
+                              <%= column[index].split('_').join(' '); %>
+                            </th>                                      
+                          <%}%>                       
+                        </tr>
+                        <% for(index=0;index<Object.values(users).length;index++){  %>
+                          <% var rows =Object.values(users[index]); %>
+                          <tbody>
+                            <tr class="odd gradeX">
+                              <% for(col=0;col<Object.keys(users[0]).length+1;col++){  %>
+                                <td class="left">
+                                  <%=rows[col]%>
+                                </td>
+                              <% } %>
+                              <td>
+                                <a href="add-<%= adddata%>?Id=<%=rows[0]%>" class="btn btn-primary btn-xs">
+                                  <i class="fa fa-pencil"></i>
+                                </a> &nbsp;&nbsp;
+                                <a href="delete-<%= adddata%>?Id=<%=rows[0]%>" class="btn btn-danger btn-xs" onclick="return confirm('Are you sure to delete these  record?')">
+                                  <i class="fa fa-trash-o "></i>
+                                </a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        <% } %>
+                      </table>
+                    </div>                          
+                    <% } %>
+                      <% if(selection==1) { %>
+                        <% for(index=1;index<=pages;index++) { %>
+                          <a href="/search-<%= fullUrl%>?page=<%=index%>&searchName=<%=size%>" aria-controls="example4" data-dt-idx="1" tabindex="0" class="page-link">
+                            <%=index%>
+                          </a>
+                        <% } %>
+                      <% } %>
+                      <% if(selection==0) { %>
+                       
+                          <% adddata = adddata.substring(0, adddata.indexOf('?'));%>
+                          <ul class="pagination" style="float:right;">
+                            <% for(index=1;index<=pages;index++) { %>
+                            <li class="paginate_button page-item">
+                            <!-- <li> -->
+                              <a href="<%=adddata%>?page=<%=index%>" aria-controls="example4" data-dt-idx="1" tabindex="0" class="page-link">
+                                <%=index%>
+                              </a>
+                            </li>
+                            <% } %>
+                          </ul>
+                       
+                      <% } %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<%- include('footer') %>

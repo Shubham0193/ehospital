@@ -1,0 +1,224 @@
+<%- include('header') %>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="users">Users</a>
+  </li>
+  <%if(Id>0) { %>
+    <li class="breadcrumb-item active">Edit Users</li>
+  <% } else { %>
+    <li class="breadcrumb-item active">Add Users</li>
+  <% } %>
+</ol>
+
+<%if(Id>0) { %>
+  <h1>Edit users</h1>
+<% } else { %>
+  <h1>Add Users</h1>
+<% } %>
+
+<div class="row">
+  <div class="col-md-8 mx-auto mt-5">
+    <%if(Id>0) { %>
+      <% users.forEach(function(user) { %>  
+        <div class="row">
+          <div class="col-md-12 col-md-12">
+            <div class="card card-box">
+              <div class="card-head">
+                <header>Basic Information</header>
+              </div>
+              <div class="card-body" id="bar-parent">
+                <form action="add-users?Id=<%=Id %>" method="post" onsubmit="return validateform();" id="form_sample_1" class="form-horizontal">
+                  <div class="form-body">                    
+                    <div class="form-group row">
+                      <label class="control-label col-md-3">
+                        <strong>Name:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtname" value='<%=user.Name%>' id="uname" type="text" onkeyup="validateUname();">
+                        <span id="errorName"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Email:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <i class="fa fa-envelope"></i>
+                          </span>
+                          <input class="form-control input-height" name="txtemail" value='<%=user.Email%>' id="uemail" type="text" onkeyup="validateEmail();">                       
+                        </div>
+                        <span id="errorMail"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Password:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtpass"  id="upass" type="password" onkeyup="validatePass();">                       
+                        <span id="errorPass"></span>
+                      </div>
+                    </div>                    
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Address:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtaddress" value='<%=user.Address%>' id="uaddress" type="text" onkeyup="validateAddress();">                       
+                        <span id="errorAdd"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>MobileNo.:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtmob" value='<%=user.MobileNo%>' id="umob" type="text" onkeyup="validatePhone();">                       
+                        <span id="errorPhone"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                    <label class="control-label col-md-3">
+                      <strong>Department</strong>
+                      <span class="text-danger">*</span>
+                    </label>
+                    <div class="col-md-7">
+                      <select class="form-control input-height" name="Name" required="">
+                        <option value="">Select</option>
+                        <% data.forEach(function(dept) { %>                          
+                              <% if(user.Department == dept.ID) { %>
+                                <option value=<%=dept.ID%> selected>
+                                  <%=dept.Name%>
+                                </option>
+                                <% }else {%>
+                                  <option value=<%=dept.ID%> >
+                                    <%=dept.Name%>
+                                  </option>
+                                  <% } %>
+                                    <% }); %>
+                      </select>
+                    </div>
+                  </div>
+
+
+      <% }); %>
+                    <div class="form-group row">
+                      <div class="offset-md-3 col-md-9">
+                        <input type="submit" value="Edit" class="btn btn-primary btn-block col-md-3" /> &nbsp;
+                        <a href="users" class="btn btn-secondary col-md-3">Cancel</a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>                   
+      <% } else { %>
+        <div class="row">
+          <div class="col-md-12 col-md-12">
+            <div class="card card-box">
+              <div class="card-head">
+                <header>Basic Information</header>
+              </div>
+              <div class="card-body" id="bar-parent">
+                <form action="add-users" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateform();">
+                  <div class="form-body">
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Name:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtname" id="uname" type="text" onkeyup="validateUname();">
+                        <span id="errorName"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Email:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <div class="input-group">
+                          <span class="input-group-addon">
+                            <i class="fa fa-envelope"></i>
+                          </span>
+                          <input class="form-control input-height" name="txtemail" id="uemail" type="text" onkeyup="validateEmail();">
+                        </div>
+                        <span id="errorMail"></span>                  
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Password:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtpass" id="upass" type="password" onkeyup="validatePass();">   
+                        <span id="errorPass"></span>                    
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Confirm Password:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtconpass" id="conpass" type="text" onkeyup="ConfirmPassword();">   
+                        <span id="errorCpass"></span>                    
+                      </div> 
+                    </div>            
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Address:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <textarea class="form-control input-height" name="txtaddress" id="uaddress" type="text" onkeyup="validateAddress();"> </textarea>   
+                        <span id="errorAdd"></span>
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>MobileNo.:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <input class="form-control input-height" name="txtmob" id="umob" type="text" onkeyup="validatePhone();">  
+                        <span id="errorPhone"></span>                     
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="control-label col-md-3"><strong>Department:</strong>
+                        <span class="text-danger">*</span>
+                      </label>
+                      <div class="col-md-7">
+                        <select class="form-control input-height" name="Name" required="">
+                          <option value="">Select</option>
+                            <% data.forEach(function(user) { %>  
+                              <option value=<%=user.Name%>><%=user.Name%>
+                            <% }); %>
+                          </option>
+                        </select> 
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-md-3 col-md-9">
+                        <input type="submit" value="Add" class="btn btn-primary btn-block col-md-3" /> &nbsp;
+                        <a href="users" class="btn btn-secondary col-md-3">Cancel</a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div> <!--col-8 -->
+  </div> <!--row-->
+<%- include('footer') %>
+
+

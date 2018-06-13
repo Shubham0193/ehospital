@@ -1,0 +1,710 @@
+<%- include('header') %>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+	<li class="breadcrumb-item">
+		<a href="listing">Dashboard</a>
+	</li>
+	<li class="breadcrumb-item">
+		<a href="patient">Patient</a>
+	</li>  
+	<%if(Id>0) { %>
+		<li class="breadcrumb-item active">Edit Patient</li>
+	<% } else { %>
+		<li class="breadcrumb-item active">Add Patient</li>
+	<% } %>
+</ol>
+
+<%if(Id>0) { %>
+	<h1>Edit Patient</h1>
+<% } else { %>
+	<h1>Add Patient</h1>
+<% } %>
+
+<!-- <%= bloodgroup%> -->
+
+<div class="row">
+	<div class="col-md-8 mx-auto mt-5">
+		<%if(Id>0) { %>
+			<% users.forEach(function(user) { %>
+				<div class="row">
+					<div class="col-md-12 col-md-12">
+						<div class="card card-box">
+							<div class="card-head">
+								<header>Basic Information</header>
+							</div>
+							<div class="card-body" id="bar-parent">
+								<form action="add-patient" method="post" id="form_sample_1" class="form-horizontal" onsubmit="return validateDoctorForm();">
+									<div class="form-body">
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Name:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" value='<%=user.name%>' name="txtprename" id="idprename" placeholder="Patient Name" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Gender:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input type="radio" name="gender" value="1">Male
+												<input type="radio" name="gender" value="2">Female
+												<input type="radio" name="gender" value="3">Transgender
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Present Address:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<textarea name="present_address" class="form-control input-height" placeholder="Present Address"><%=user.present_address%></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>City:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" name="txtcity" id="idcity" value='<%=user.present_city%>' placeholder="City Name" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>State:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="statedropdown" required="">
+													<option value="">Select</option>
+													<% state.forEach(function(stet) { %>
+														<% if(user.present_state == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>District:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="dropdowndistrict" id="permdist" required="">
+													<option value="">Select</option>
+													<% district.forEach(function(stet) { %>
+														<% if(user.present_district == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Pin:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" name="txtpin" value='<%=user.present_pin%>' id="idpin" placeholder="Pin Number" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Permenant Address:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<label>
+													Same As Present Address:
+												</label>
+												<input type="checkbox" name="chkaddr" value="chkaddr" id="idchkbox" onclick="chkbx();">
+												<textarea name="permenant_address" class="form-control input-height" placeholder="Permenant Address"><%=user.permenent_address%></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>City:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" name="citytxt" value='<%=user.permenent_city%>' id="idpermcity" placeholder="City Name" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>State:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="dropdownstate" id="idpermstate" required="">
+													<option value="">Select</option>
+													<% state.forEach(function(stet) { %>
+														<% if(user.permenent_state == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>District:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="dropdowndistrict" id="permdist" required="">
+													<option value="">Select</option>
+													<% district.forEach(function(stet) { %>
+														<% if(user.permenent_district == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Pin:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" name="pintxt" id="idpermpin" value='<%=user.permenent_pin%>' placeholder="Pin Number" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Citizenship:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select name="citizenship" class="form-control input-height">
+													<option value="1">Indian</option>
+													<option value="2">Other</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Email:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<div class="input-group">
+													<span class="input-group-addon">
+														<i class="fa fa-envelope"></i>
+													</span>
+													<input class="form-control input-height" value='<%=user.email%>' name="txtemail" id="idemail" type="text" placeholder="Email" onkeyup="validateDoctorEmail();">
+												</div>
+												<span id="errorMail"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Mobile:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" name="txtmobile" value='<%=user.mobile_no%>' id="idmobile" type="text" onkeyup="validateMobile()">
+												<span id="errorPhone"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Occupation:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="occupation">
+													<option value="1">other</option>
+													<option value="2">teacher</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Date Of Birth:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input "form-control input-height" value='<%=user.dob%>' type="date" name="dob" id="dob" onfocusout="getAge();">
+												<strong>Age:</strong>
+												<span id="agespan" name="txtage"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>S/O:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" value='<%=user.son_of%>' name="txtsonof" id="idprename" placeholder="Son Of" type="text" onkeyup="validatePreName();">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Patient Description:</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<textarea name="patient_description" class="form-control input-height" placeholder="Patient Description"><%=user.patient_description%></textarea>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Department</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="department" required="">
+													<option value="">Select</option>
+													<% data.forEach(function(stet) { %>
+														<% if(user.department == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Doctors Room</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="doctorsRoom" required="">
+													<option value="">Select</option>
+													<% category.forEach(function(stet) { %>
+														<% if(user.doctor_room == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Height(in cm):</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" value='<%=user.height%>' name="txtheight" id="idprename" placeholder="Patient Height" type="text">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Weight(in kg):</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<input class="form-control input-height" value='<%=user.weight%>' name="txtweight" id="idprename" placeholder="Patient Weight" type="text">
+												<span id="errorprename"></span>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="control-label col-md-3">
+												<strong>Blood Group</strong>
+												<span class="text-danger">*</span>
+											</label>
+											<div class="col-md-7">
+												<select class="form-control input-height" name="bloodgroup" required="">
+													<option value="">Select</option>
+													<% bloodgroup.forEach(function(stet) { %>
+														<% if(user.blood_group == stet.Id) { %>
+															<option value=<%=stet.Id%> selected>
+																<%=stet.Name%>
+															</option>
+														<% }else {%>
+															<option value=<%=stet.Id%> >
+																<%=stet.Name%>
+															</option>
+														<% } %>
+													<% }); %>
+												</select>
+											</div>
+										</div>
+									<% }); %>
+									<div class="form-group row">
+										<div class="offset-md-3 col-md-9">
+											<input type="submit" value="Edit" class="btn btn-primary btn-block col-md-3" /> &nbsp;
+											<a href="patient" class="btn btn-secondary col-md-3">Cancel</a>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		<% } else { %>
+		<div class="row">
+			<div class="col-md-12 col-md-12">
+				<div class="card card-box">
+					<div class="card-head">
+						<header>Basic Information</header>
+					</div>
+					<div class="card-body" id="bar-parent">
+						<form action="add-patient" method="post" id="form_sample_1" class="form-horizontal" onsubmit="return validateDoctorForm();">
+							<div class="form-body">
+								<div class="form-group row">
+									<label class="control-label col-md-3">
+										<strong>Name:</strong>
+										<span class="text-danger">*</span>
+									</label>
+									<div class="col-md-7">
+										<input class="form-control input-height" name="txtprename" id="idprename" placeholder="Patient Name" type="text" onkeyup="validatePreName();"> 
+										<span id="errorprename"></span>    
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="control-label col-md-3">
+										<strong>Gender:</strong>
+										<span class="text-danger">*</span>
+									</label>
+									<div class="col-md-7">
+										<input type="radio" name="gender" value="1" checked>Male									
+										<input type="radio" name="gender" value="2">Female
+										<input type="radio" name="gender" value="3">Transgender
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="control-label col-md-3">
+										<strong>Present Address:</strong>
+										<span class="text-danger">*</span>
+									</label>
+									<div class="col-md-7">
+										<textarea name="present_address" class="form-control input-height" placeholder="Present Address" id="addr"></textarea>
+									</div>
+								</div>
+			<div class="form-group row">
+			<label class="control-label col-md-3">
+			<strong>City:</strong>
+			<span class="text-danger">*</span>
+			</label>
+			<div class="col-md-7">
+			<input class="form-control input-height" name="txtcity" id="idcity" placeholder="City Name" type="text" onkeyup="validatePreName();">
+			<span id="errorprename"></span>
+			</div>
+			</div>							
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>State:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="statedropdown" id="idstate" required="" onchange="districtList()">
+<option value="">Select</option>
+<% state.forEach(function(stet) { %>
+<option value=<%=stet.Id%>>
+<%=stet.Name%>
+<% }); %>
+</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>District:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="districtdropdown" id="iddist" class="classdist" required="">
+
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Pin:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="txtpin" id="idpin" placeholder="Pin Number" type="text" onkeyup="validatePreName();">
+<span id="errorprename"></span>
+</div>
+</div>			
+
+
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Permenant Address:</strong>
+<span class="text-danger">*</span>
+</label>			
+
+<div class="col-md-7">
+<label>
+Same As Present Address:
+</label>
+<input type="checkbox" name="chkaddr" value="chkaddr" id="idchkbox" onclick="chkbx();">						        
+<textarea name="permenant_address" class="form-control input-height" placeholder="Permenant Address" id="permaddr"></textarea>									
+</div>
+</div>
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>City:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="citytxt" id="idpermcity" placeholder="City Name" type="text" onkeyup="validatePreName();">
+<span id="errorprename"></span>
+</div>
+</div>
+
+
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>State:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="dropdownstate" id="idpermstate" required="">
+<option value="">Select</option>
+<% state.forEach(function(stet) { %>
+<option value=<%=stet.Id%>>
+<%=stet.Name%>
+<% }); %>
+</option>
+</select>
+</div>
+</div>
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>District:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="dropdowndistrict" id="permdist" class="classdist" required="">
+
+</select>
+</div>
+</div>
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Pin:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="pintxt" id="idpermpin" placeholder="Pin Number" type="text" onkeyup="validatePreName();">
+<span id="errorprename"></span>
+</div>
+</div>
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Citizenship:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select name="citizenship" class="form-control input-height">
+<option value="1">Indian</option>
+<option value="2">Other</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Email:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<div class="input-group">
+<span class="input-group-addon">
+<i class="fa fa-envelope"></i>
+</span>
+<input class="form-control input-height" name="txtemail" id="idemail" type="text" placeholder="Email" onkeyup="validateDoctorEmail();">
+</div>
+<span id="errorMail"></span>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Mobile:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="txtmobile" id="idmobile" placeholder="Mobile Number" type="text" onkeyup="validateMobile()">
+<span id="errorPhone"></span>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Occupation:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="occupation">
+<option value="1">other</option>
+<option value="2">teacher</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Date Of Birth:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input "form-control input-height" type="date" name="dob" id = "dob" onfocusout="getAge();">
+<label class="control-label col-md-3">
+<strong>Age:</strong>
+<span id="agespan" name="txtage"></span>																					
+</label>
+</div>
+</div>
+
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>S/O:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="txtsonof" id="idprename" placeholder="Son Of" type="text" onkeyup="validatePreName();">
+<span id="errorprename"></span>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Patient Description:</strong>
+<span class="text-danger">*</span>
+</label>							
+<div class="col-md-7">										
+<textarea name="patient_description" class="form-control input-height" placeholder="Patient Description"></textarea>
+</div>
+</div>  
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Department:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="department" required="">
+<option value="">Select</option>
+<% data.forEach(function(user) { %>
+<option value=<%=user.Id%>>
+<%=user.Name%>
+<% }); %>
+</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Doctors Room:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="doctorsRoom" required="">
+<option value="">Select</option>
+<% category.forEach(function(cat) { %>
+<option value=<%=cat.Id%>>
+<%=cat.Name%>
+<% }); %>
+</option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Height(in cm):</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="txtheight" id="idprename" placeholder="Patient Height" type="text">
+<span id="errorprename"></span>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Weight(in kg):</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<input class="form-control input-height" name="txtweight" id="idprename" placeholder="Patient Weight" type="text">
+<span id="errorprename"></span>
+</div>
+</div>
+<div class="form-group row">
+<label class="control-label col-md-3">
+<strong>Blood Group:</strong>
+<span class="text-danger">*</span>
+</label>
+<div class="col-md-7">
+<select class="form-control input-height" name="bloodgroup" required="">
+<option value="">Select</option>
+<% bloodgroup.forEach(function(bgroup) { %>
+<option value=<%=bgroup.Id%>>
+<%=bgroup.Name%>
+<% }); %>
+</option>
+</select>
+</div>
+</div>					
+<div class="form-group row">
+<div class="offset-md-3 col-md-9">
+<input type="submit" value="Add" class="btn btn-primary btn-block col-md-3" /> &nbsp;
+<a href="patient" class="btn btn-secondary col-md-3">Cancel</a>
+</div>
+</div>
+</div>
+</form>
+</div>
+</div>
+</div>     
+</div>   
+<% } %>
+</div> <!--col-8 -->
+</div> <!--row-->
+<%- include('footer') %>

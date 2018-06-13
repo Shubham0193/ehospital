@@ -1,0 +1,96 @@
+ <%- include('header') %>
+<!-- Breadcrumbs-->
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">
+    <a href="dashboard">Dashboard</a>
+  </li>
+  <li class="breadcrumb-item">
+    <a href="branch">Branch</a>
+  </li>
+  <%if(Id>0) { %>
+    <li class="breadcrumb-item active">Edit Branch</li>
+  <% } else { %>
+    <li class="breadcrumb-item active">Add Branch</li>
+  <% } %>
+</ol>
+
+<div class="row">
+  <div class="col-md-12 form-group">
+    <%if(Id>0) { %>
+     <h1>Edit Branch</h1>
+     <% } else { %>
+     <h1>Add Branch</h1>
+      <% } %>
+        <div class="row">
+          <div class="col-md-8 mx-auto mt-5">
+            <%if(Id>0) { %>
+              <div class="row">
+                <div class="col-sd-12 col-md-12">
+                  <div class="card card-box">
+                    <div class="card-head">
+                      <header>Basic Information</header>
+                    </div>
+                  <div class="card-body" id="bar-parent">
+                    <form action="add-branch?Id=<%=Id %>" id="form_sample_1" class="form-horizontal" method="post" onsubmit="return validateBname();">
+                      <% users.forEach(function(user) { %>                     
+                        <div class="form-group row">
+                          <label class="control-label col-md-3">Name:
+                            <span class="required"> * </span>
+                          </label>
+                          <div class="col-md-7">
+                            <input class="form-control input-height" name="txtname" value='<%=user.Name%>' id="bname"    type="text" placeholder="Branch" onkeyup="return validateBname();">
+                            <span id="errorName"></span>                        
+                          </div>  
+                        </div>
+                      <% }); %>
+                        <div class="form-group row">
+                          <div class="offset-md-3 col-md-9">
+                            <input type="submit" value="Edit" class="btn btn-primary btn-block col-md-3" /> &nbsp;
+                            <a href="branch" class="btn btn-secondary col-md-3">Cancel</a>
+                          </div>
+                        </div>
+                    </form>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <% } else { %>
+          <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <div class="card card-box">
+                <div class="card-head">
+                  <header>Basic Information</header>
+                </div>
+                <div class="card-body" id="bar-parent">
+                  <form action="add-branch" method="post" id="form_sample_1" class="form-horizontal" onsubmit="return validateBname();">
+                    <div class="form-body">
+                      <div class="form-group row">
+                        <label class="control-label col-md-3">Name:
+                          <span class="required"> * </span>
+                        </label>
+                        <div class="col-md-5">
+                          <input class="form-control input-height" name="txtname" id="bname" type="text" placeholder="Branch Name" onkeyup="validateBname();">
+                          <span id="errorName"> </span>
+                        </div>
+                      </div>
+                      <div class="form-actions">
+                        <div class="form-group row">
+                          <div class="offset-md-3 col-md-9">
+                            <input type="submit" value="Add" class="btn btn-info btn-block col-md-3" /> &nbsp;
+                            <a href="branch" class="btn btn-secondary btn-block col-md-3">Cancel</a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>                        
+        <% } %>
+      </div> <!--col-8 -->
+    </div> <!--row-->
+  </div>
+</div>
+<%- include('footer') %>
