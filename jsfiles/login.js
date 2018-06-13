@@ -49,6 +49,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     connection.query(qry,
         function (err, result) {
             if (err) throw err;
+        console.log(result);
             if (result.length > 0){
                 sess.email = result[0].email; 
                 sess.bid = result[0].bid;
