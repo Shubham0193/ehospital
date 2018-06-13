@@ -44,7 +44,7 @@ app.post('/login', urlencodedParser, function (req, res) {
     sess = req.session;
     var email = req.body.txtemail;
     var password = req.body.txtpass; 
-    var qry = 'SELECT * FROM admin where Email = "' + email + '"  &&  Password = "' + password + '"';
+    var qry = 'SELECT * FROM admin where Email = \'' + email + '\'  AND  Password = \'' + password + '\'';
     connection.query(qry,
         function (err, result) {
             if (err) throw err;
