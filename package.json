@@ -17,6 +17,7 @@
     "mysql": "^2.15.0",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
+    "pg": "^7.4.3",
     "run-parallel": "^1.1.9",
     "sequelize": "^4.37.10",
     "string": "^3.3.3"
